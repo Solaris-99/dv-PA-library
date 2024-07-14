@@ -3,6 +3,8 @@ package test;
 import dao.Dao;
 import dto.Entity;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,16 @@ public class DummyDao <T extends Entity> extends Dao<T> {
     @Override
     public T update(String column, int value, int id) throws SQLException {
         return entities.getFirst();
+    }
+
+    @Override
+    protected void setInsertParameters(PreparedStatement stmt, T entity) throws SQLException {
+
+    }
+
+    @Override
+    protected List<T> hydrate(ResultSet res) throws SQLException {
+        return List.of();
     }
 
 
