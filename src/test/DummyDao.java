@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DummyDao <T extends Entity> extends Dao<T> {
-    private List<T> entities;
+    private final List<T> entities;
 
     public DummyDao(){throw new IllegalArgumentException("No return entity provided to DummyDao");}
 

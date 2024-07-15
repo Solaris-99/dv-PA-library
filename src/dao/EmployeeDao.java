@@ -17,6 +17,13 @@ public class EmployeeDao extends Dao<Employee> {
         this.cols = Arrays.asList("id","id_user","salary");
     }
 
+    public boolean isEmployee(int userId) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT id FROM employee WHERE id_user = ?");
+        stmt.setInt(1,userId);
+        ResultSet res = stmt.executeQuery();
+        return res.isBeforeFirst();
+    }
+
     @Override
     protected void setInsertParameters(PreparedStatement stmt, Employee entity) throws SQLException {
         stmt.setInt(1, entity.id_user());
