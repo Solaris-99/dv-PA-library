@@ -4,6 +4,7 @@ import dao.Dao;
 import dao.EmployeeDao;
 import dao.UserDao;
 import dto.User;
+import helpers.Status;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
@@ -26,7 +27,9 @@ public class AuthBusiness {
     // login, register, isEmployee;
     public boolean isEmployee(int userId){
         try{
-            return employeeDao.isEmployee(userId);
+            boolean isEmp = employeeDao.isEmployee(userId);
+            Status.getInstance().setEmployee(isEmp);
+            return isEmp;
         } catch (SQLException e) {
             System.out.println("Error checking employee");
             return false;
@@ -37,7 +40,8 @@ public class AuthBusiness {
         try{
             User user = userDao.select(email,"=","email");
             if(BCrypt.checkpw(password,user.password())){
-                //TODO: status
+                isEmployee(user.id());
+                Status.getInstance().setUserId(user.id());
                 return true;
             }
         } catch (SQLException e) {

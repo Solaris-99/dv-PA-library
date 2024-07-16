@@ -70,6 +70,22 @@ public abstract class Dao <T extends Entity>{
         return this.select(id, "=", "id");
     }
 
+    public T update(String column, double value, int id) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("UPDATE " + getTableName() + " SET " + column + " = ? WHERE ID = ?");
+        stmt.setDouble(1, value);
+        stmt.setInt(2, id);
+        stmt.executeUpdate();
+        return this.select(id, "=", "id");
+    }
+
+    public T update(String column, String value, int id) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("UPDATE " + getTableName() + " SET " + column + " = ? WHERE ID = ?");
+        stmt.setString(1, value);
+        stmt.setInt(2, id);
+        stmt.executeUpdate();
+        return this.select(id, "=", "id");
+    }
+
     protected String getInsertQuery(){
         String cols = String.join(",",this.cols);
         StringBuilder builder = new StringBuilder("INSERT INTO ");

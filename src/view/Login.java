@@ -3,8 +3,12 @@ package view;
 import javax.swing.*;
 
 public class Login {
-    private JButton button1;
+    private JButton loginButton;
     private JPasswordField passwordField;
     private JTextField emailField;
-    private JLabel title;
+    private JLabel titleLabel;
+    private JPanel content;
+    private JButton registerButton;
+    private JPanel title;
+    private JPanel body;
 }

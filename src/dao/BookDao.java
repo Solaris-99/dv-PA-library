@@ -14,8 +14,10 @@ public class BookDao extends Dao<Book> {
     public BookDao(){
         super();
         this.tableName = "BOOK";
-        this.cols = Arrays.asList("id","title","year","id_author","id_publisher");
+        this.cols = Arrays.asList("id","title","year","id_author","id_publisher","total_copies","available_copies");
     }
+    //TODO: NUMBER OF COPIES
+
 
     @Override
     protected void setInsertParameters(PreparedStatement stmt, Book entity) throws SQLException {
@@ -35,7 +37,9 @@ public class BookDao extends Dao<Book> {
                     res.getString("title"),
                     res.getInt("year"),
                     res.getInt("id_author"),
-                    res.getInt("id_publisher")
+                    res.getInt("id_publisher"),
+                    res.getInt("total_copies"),
+                    res.getInt("available_copies")
             );
             books.add(book);
         }
