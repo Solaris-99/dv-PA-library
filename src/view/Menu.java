@@ -14,9 +14,10 @@ public class Menu implements Viewable{
     private JButton userManagerButton;
     private JButton statisticsButton;
     private JButton logoutButton;
+    private JButton addBookButton;
 
     private void makeFunctional(){
-        booksButton.addActionListener(new HyperLink<>(new Books()));
+        booksButton.addActionListener(new HyperLink<>(new Books("",0)));
         Status status = Status.getInstance();
         if(!status.isEmployee()){
             userManagerButton.setEnabled(false);

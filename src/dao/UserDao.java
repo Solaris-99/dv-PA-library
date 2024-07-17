@@ -13,7 +13,7 @@ public class UserDao extends Dao<User>{
     public UserDao(){
         super();
         this.tableName = "USER";
-        this.cols = Arrays.asList("id","name","surname","email","password","dni");
+        this.cols = Arrays.asList("name","surname","email","password","dni");
     }
 
     @Override

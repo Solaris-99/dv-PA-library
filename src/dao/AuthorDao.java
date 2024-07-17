@@ -14,7 +14,7 @@ public class AuthorDao extends Dao<Author> {
     public AuthorDao(){
         super();
         this.tableName = "AUTHOR";
-        this.cols = Arrays.asList("id","name");
+        this.cols = List.of("name");
     }
 
 

@@ -1,6 +1,7 @@
 package dao;
 
 import dto.Book;
+import helpers.Status;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ public class BookDao extends Dao<Book> {
     public BookDao(){
         super();
         this.tableName = "BOOK";
-        this.cols = Arrays.asList("id","title","year","id_author","id_publisher","total_copies","available_copies");
+        this.cols = Arrays.asList("title","year","id_author","id_publisher","total_copies","available_copies");
     }
     //TODO: NUMBER OF COPIES
 
@@ -44,6 +45,25 @@ public class BookDao extends Dao<Book> {
             books.add(book);
         }
         return books;
+    }
+
+    public List<Book> selectAll(String name, int page) throws SQLException{
+        int itemsPerPage = Status.getInstance().getItemsPerPage();
+        name = "%"+name+"%";
+        int lowerLimit = itemsPerPage*page;
+        int upperLimit = lowerLimit+itemsPerPage;
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM BOOK WHERE TITLE LIKE ? LIMIT ?, ?");
+        stmt.setString(1,name);
+        stmt.setInt(2,lowerLimit);
+        stmt.setInt(3,upperLimit);
+        return hydrate(stmt.executeQuery());
+    }
+
+    public int bookCount() throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(1) AS COUNT FROM BOOK");
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        return res.getInt("COUNT");
     }
 
 }

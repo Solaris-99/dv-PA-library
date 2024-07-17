@@ -14,7 +14,7 @@ public class PublisherDao extends Dao<Publisher> {
     public PublisherDao(){
         super();
         this.tableName = "PUBLISHER";
-        this.cols = Arrays.asList("id","name");
+        this.cols = List.of("name");
     }
 
 

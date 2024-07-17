@@ -14,7 +14,7 @@ public class EmployeeDao extends Dao<Employee> {
     public EmployeeDao(){
         super();
         this.tableName = "EMPLOYEE";
-        this.cols = Arrays.asList("id","id_user","salary");
+        this.cols = Arrays.asList("id_user","salary");
     }
 
     public boolean isEmployee(int userId) throws SQLException {

@@ -8,6 +8,7 @@ import helpers.Status;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 public class AuthBusiness {
     private final UserDao userDao;
@@ -44,10 +45,17 @@ public class AuthBusiness {
                 Status.getInstance().setUserId(user.id());
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (NoSuchElementException nse){
+            System.out.println("password/email not found");
+            return false;
+        }
+        catch (SQLException e) {
             System.out.println("Error authenticating user");
             System.out.println(e.getMessage());
         }
+
+
         return false;
     }
 

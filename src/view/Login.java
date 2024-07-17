@@ -33,6 +33,7 @@ public class Login implements Viewable {
                 }
             }
         });
+        registerButton.addActionListener(new HyperLink<>(new Register()));
     }
 
 

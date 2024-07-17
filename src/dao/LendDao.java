@@ -14,7 +14,7 @@ public class LendDao extends Dao<Lend>{
     public LendDao(){
         super();
         this.tableName = "LEND";
-        this.cols = Arrays.asList("id","id_book","id_user","id_employee","time","returned","return_date");
+        this.cols = Arrays.asList("id_book","id_user","id_employee","time","returned","return_date");
     }
 
     @Override

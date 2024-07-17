@@ -99,6 +99,7 @@ public abstract class Dao <T extends Entity>{
         }
         builder.append(String.join(",",wildcards));
         builder.append(")");
+        System.out.println(builder);
         return builder.toString();
     }
 

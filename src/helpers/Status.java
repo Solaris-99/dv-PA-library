@@ -4,8 +4,11 @@ public class Status {
     private static Status instance;
     private int userId;
     private boolean isEmployee;
+    private final int itemsPerPage;
 
-    private Status(){}
+    private Status(){
+        itemsPerPage = 5;
+    }
 
     public static Status getInstance(){
         if(instance == null){
@@ -28,6 +31,8 @@ public class Status {
         isEmployee = employee;
     }
 
-
+    public int getItemsPerPage(){
+        return itemsPerPage;
+    }
 
 }
