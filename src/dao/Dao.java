@@ -1,6 +1,7 @@
 package dao;
 import config.DBConnection;
 import dto.Entity;
+import helpers.Status;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,14 +29,38 @@ public abstract class Dao <T extends Entity>{
         return this.hydrate(stmt.executeQuery()).getFirst();
     }
 
-    public List<T> selectAll() throws SQLException{
-        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+this.getTableName());
+    public List<T> selectAll(int page) throws SQLException{
+        int itemsPerPage = Status.getInstance().getItemsPerPage();
+        int lowerLimit = itemsPerPage*page;
+        int upperLimit = lowerLimit+itemsPerPage;
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+this.getTableName() + " LIMIT ?, ?");
+        stmt.setInt(1,lowerLimit);
+        stmt.setInt(2,upperLimit);
         return this.hydrate(stmt.executeQuery());
     }
 
-    public List<T> selectAll(String value, String operator, String column) throws SQLException{
-        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+ this.getTableName() +" WHERE "+ column + " "+operator+" ?");
+    public List<T> selectAll(String value, String operator, String column, int page) throws SQLException{
+        int itemsPerPage = Status.getInstance().getItemsPerPage();
+        int lowerLimit = itemsPerPage*page;
+        int upperLimit = lowerLimit+itemsPerPage;
+        if(operator.equalsIgnoreCase("like")){
+            value = "%"+value+"%";
+        }
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+ this.getTableName() +" WHERE "+ column + " "+operator+" ? LIMIT ?, ?");
         stmt.setString(1,value);
+        stmt.setInt(2,lowerLimit);
+        stmt.setInt(3,upperLimit);
+        return this.hydrate(stmt.executeQuery());
+    }
+
+    public List<T> selectAll(int value, String operator, String column, int page) throws SQLException{
+        int itemsPerPage = Status.getInstance().getItemsPerPage();
+        int lowerLimit = itemsPerPage*page;
+        int upperLimit = lowerLimit+itemsPerPage;
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+ this.getTableName() +" WHERE "+ column + " "+operator+" ? LIMIT ?, ?");
+        stmt.setInt(1,value);
+        stmt.setInt(2, lowerLimit);
+        stmt.setInt(3,upperLimit);
         return this.hydrate(stmt.executeQuery());
     }
 
@@ -103,6 +128,13 @@ public abstract class Dao <T extends Entity>{
         return builder.toString();
     }
 
+    public int getItemCount() throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(1) AS COUNT FROM "+tableName);
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        return res.getInt("COUNT");
+    }
+
     protected abstract void setInsertParameters(PreparedStatement stmt, T entity) throws SQLException;
 
     protected abstract List<T> hydrate(ResultSet res) throws SQLException;
@@ -119,7 +151,5 @@ public abstract class Dao <T extends Entity>{
     public void rollback() throws SQLException {
         this.connection.rollback();
     }
-
-
 
 }

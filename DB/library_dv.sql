@@ -113,8 +113,7 @@ CREATE TABLE IF NOT EXISTS `lend` (
   `id_user` INT NOT NULL,
   `id_employee` INT NOT NULL,
   `time` DATETIME NOT NULL,
-  `returned` TINYINT NULL DEFAULT 0,
-  `return_date` DATETIME NOT NULL,
+  `return_date` DATETIME NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_lend_user1`
     FOREIGN KEY (`id_user`)

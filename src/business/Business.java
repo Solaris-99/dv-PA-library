@@ -2,6 +2,7 @@ package business;
 
 import dao.Dao;
 import dto.Entity;
+import helpers.Status;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -36,9 +37,9 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         return null;
     }
 
-    public List<E> selectAll(String value, String operator, String column){
+    public List<E> selectAll(String value, String operator, String column, int page){
         try{
-            return this.dao.selectAll(value, operator, column);
+            return this.dao.selectAll(value, operator, column, page);
         }
         catch (SQLException e){
             System.out.println("Error fetching items");
@@ -47,9 +48,20 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         return null;
     }
 
-    public List<E> selectAll(){
+    public List<E> selectAll(int value, String operator, String column, int page){
         try{
-            return this.dao.selectAll();
+            return this.dao.selectAll(value,operator,column, page);
+        }
+        catch (SQLException e){
+            System.out.println("Error fetching items");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<E> selectAll(int page){
+        try{
+            return this.dao.selectAll(page);
         }
         catch (SQLException e){
             System.out.println("Error fetching all items");
@@ -90,6 +102,16 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         return null;
     }
 
+    public int getTotalPages(){
+        try{
+            return (int) Math.ceil((double) dao.getItemCount() / Status.getInstance().getItemsPerPage());
+        }
+        catch (SQLException e){
+            System.out.println("error getting number of pages");
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
 
 
 }

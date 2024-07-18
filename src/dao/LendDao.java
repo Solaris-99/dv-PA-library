@@ -14,7 +14,7 @@ public class LendDao extends Dao<Lend>{
     public LendDao(){
         super();
         this.tableName = "LEND";
-        this.cols = Arrays.asList("id_book","id_user","id_employee","time","returned","return_date");
+        this.cols = Arrays.asList("id_book","id_user","id_employee","time","return_date");
     }
 
     @Override
@@ -23,9 +23,7 @@ public class LendDao extends Dao<Lend>{
         stmt.setInt(2,entity.id_user());
         stmt.setInt(3,entity.id_employee());
         stmt.setDate(4,entity.time());
-        stmt.setBoolean(5, entity.returned());
-        stmt.setDate(6,entity.return_date());
-
+        stmt.setDate(5,entity.return_date());
     }
 
 
@@ -39,11 +37,18 @@ public class LendDao extends Dao<Lend>{
                     res.getInt("id_user"),
                     res.getInt("id_employee"),
                     res.getDate("time"),
-                    res.getBoolean("returned"),
                     res.getDate("return_date")
             );
             lends.add(lend);
         }
         return lends;
     }
+
+    public int lendCount() throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(1) AS COUNT FROM LEND");
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        return res.getInt("COUNT");
+    }
+
 }

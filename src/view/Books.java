@@ -28,12 +28,11 @@ public class Books implements Viewable{
     }
 
     private void makeFunctional(){
-        System.out.println(this.search);
         searchField.setText(this.search);
         booksPanel.setLayout(new BoxLayout(booksPanel,BoxLayout.Y_AXIS));
         goBackButton.addActionListener(new HyperLink<>(new Menu()));
         BookBusiness bookBusiness = new BookBusiness();
-        List<Book> books = bookBusiness.selectAll(this.search,this.page);
+        List<Book> books = bookBusiness.selectAll(this.search,"LIKE", "title",this.page);
         for(Book book : books){
             if(book.available_copies() > 1){
                 booksPanel.add(new BookComponent(book));

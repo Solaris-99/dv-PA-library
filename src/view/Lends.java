@@ -1,12 +1,75 @@
 package view;
 
-import javax.swing.*;
+import business.LendBusiness;
+import dto.Lend;
+import helpers.Status;
+import view.component.LendComponent;
 
-public class Lends {
+import javax.swing.*;
+import java.util.List;
+
+public class Lends implements Viewable {
     private JPanel title;
     private JLabel titleLabel;
     private JPanel body;
     private JButton goBackButton;
-    private JScrollPane scroll;
     private JPanel content;
+    private JButton backPage;
+    private JButton nextPage;
+    private JPanel lendsPanel;
+    private JTextField searchField;
+    private JPanel searchPanel;
+    private final int page;
+    private final String search;
+
+    public Lends(String search, int page){
+        this.page = page;
+        this.search = search;
+    }
+
+    private void makeFunctional(){
+        lendsPanel.setLayout(new BoxLayout(lendsPanel,BoxLayout.Y_AXIS));
+
+        LendBusiness lendBusiness = new LendBusiness();
+        Status status = Status.getInstance();
+        List<Lend> lends;
+        if(status.isEmployee()){
+            if(!this.search.isBlank()){
+                lends = lendBusiness.selectAll(this.page);
+            }else{
+                lends = lendBusiness.selectAll(this.page);                          // TODO: REMOVE AFTER IMPLEMENTATION OF SEARCHALL ON LEND, TO ALLOW SEARCHING BY DNI.
+                //lends = lendBusiness.selectAll(this.search,"=","DNI",this.page);
+            }
+        }else{
+            content.remove(searchPanel);
+            lends = lendBusiness.selectAll(status.getUserId(),"=","id",this.page);
+        }
+        for(Lend lend : lends){
+            lendsPanel.add(new LendComponent(lend));
+        }
+        lendsPanel.revalidate();
+        lendsPanel.repaint();
+        if(this.page > 0){
+            backPage.addActionListener(new HyperLink<>(new Lends(this.search,page-1)));
+        }else{
+            backPage.setEnabled(false);
+        }
+        if(this.page < lendBusiness.getTotalPages()){
+            nextPage.addActionListener(new HyperLink<>(new Lends(this.search,page+1)));
+        }
+        else{
+            nextPage.setEnabled(false);
+        }
+        goBackButton.addActionListener(new HyperLink<>(new Menu()));
+
+    }
+
+
+
+    @Override
+    public JPanel getContent(){
+        makeFunctional();
+        return content;
+    }
+
 }
