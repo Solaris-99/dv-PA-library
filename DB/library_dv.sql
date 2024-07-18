@@ -85,6 +85,31 @@ CREATE UNIQUE INDEX `email_UNIQUE` ON `user` (`email` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
+-- Table `lend`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `lend` ;
+
+CREATE TABLE IF NOT EXISTS `lend` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_book` INT NOT NULL,
+  `id_user` INT NOT NULL,
+  `time` DATETIME NOT NULL,
+  `return_date` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_lend_user1`
+    FOREIGN KEY (`id_user`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lend_book1`
+    FOREIGN KEY (`id_book`)
+    REFERENCES `book` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `employee`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `employee` ;
@@ -97,37 +122,6 @@ CREATE TABLE IF NOT EXISTS `employee` (
   CONSTRAINT `fk_employee_user1`
     FOREIGN KEY (`id_user`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `lend`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `lend` ;
-
-CREATE TABLE IF NOT EXISTS `lend` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `id_book` INT NOT NULL,
-  `id_user` INT NOT NULL,
-  `id_employee` INT NOT NULL,
-  `time` DATETIME NOT NULL,
-  `return_date` DATETIME NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_lend_user1`
-    FOREIGN KEY (`id_user`)
-    REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lend_employee1`
-    FOREIGN KEY (`id_employee`)
-    REFERENCES `employee` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_lend_book1`
-    FOREIGN KEY (`id_book`)
-    REFERENCES `book` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

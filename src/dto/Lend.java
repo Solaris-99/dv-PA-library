@@ -5,12 +5,12 @@ import business.UserBusiness;
 
 import java.sql.Date;
 
-public record Lend(int id, int id_book, int id_user, int id_employee, Date time, Date return_date) implements Entity {
+public record Lend(int id, int id_book, int id_user, Date time, Date return_date) implements Entity {
 
     public String getBookTitle(){
         BookBusiness bookBusiness = new BookBusiness();
         Book book = bookBusiness.select(id_book,"=","id");
-        return book.getAuthor() + " - " + book.title();
+        return book.getAuthor().name() + " - " + book.title();
     }
 
     public String getUserIdentity(){

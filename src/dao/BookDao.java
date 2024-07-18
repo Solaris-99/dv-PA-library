@@ -26,7 +26,6 @@ public class BookDao extends Dao<Book> {
         stmt.setInt(4,entity.id_publisher());
     }
 
-
     @Override
     protected List<Book> hydrate(ResultSet res) throws SQLException {
         List<Book> books = new ArrayList<>();
@@ -44,5 +43,6 @@ public class BookDao extends Dao<Book> {
         }
         return books;
     }
+
 
 }

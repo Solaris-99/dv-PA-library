@@ -2,16 +2,20 @@ package view;
 
 import javax.swing.*;
 
-public class Statistics implements Viewable{
+public class UserManager implements Viewable {
     private JPanel title;
     private JLabel titleLabel;
     private JPanel body;
     private JButton goBackButton;
-    private JLabel statisticsLabel;
+    private JPanel usersPanel;
+    private JButton backPage;
+    private JButton nextPage;
+    private JPanel searchPanel;
+    private JTextField searchField;
     private JPanel content;
 
-    public void makeFunctional(){
-        //TODO
+    private void makeFunctional(){
+        //todo
         goBackButton.addActionListener(new HyperLink<>(new Menu()));
     }
 
@@ -20,5 +24,6 @@ public class Statistics implements Viewable{
         makeFunctional();
         return content;
     }
+
 
 }

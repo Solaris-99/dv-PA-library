@@ -1,5 +1,6 @@
 package view;
 
+import dto.User;
 import helpers.Status;
 
 import javax.swing.*;
@@ -20,12 +21,15 @@ public class Menu implements Viewable{
         booksButton.addActionListener(new HyperLink<>(new Books("",0)));
         Status status = Status.getInstance();
         if(!status.isEmployee()){
-            content.remove(userManagerButton);
-            content.remove(statisticsButton);
+            body.remove(userManagerButton);
+            body.remove(statisticsButton);
+            body.remove(addBookButton);
         }
         else{
             //TODO
-            System.out.println("adding employee features..");
+            userManagerButton.addActionListener(new HyperLink<>(new UserManager()));
+            statisticsButton.addActionListener(new HyperLink<>(new Statistics()));
+            addBookButton.addActionListener(new HyperLink<>(new BookCreator()));
         }
         logoutButton.addActionListener(new HyperLink<>(new Login()));
         lendsButton.addActionListener(new HyperLink<>(new Lends("",0)));

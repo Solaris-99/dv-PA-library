@@ -1,6 +1,7 @@
 package dao;
 
 import dto.Lend;
+import helpers.Status;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,16 +15,15 @@ public class LendDao extends Dao<Lend>{
     public LendDao(){
         super();
         this.tableName = "LEND";
-        this.cols = Arrays.asList("id_book","id_user","id_employee","time","return_date");
+        this.cols = Arrays.asList("id_book","id_user","time","return_date");
     }
 
     @Override
     protected void setInsertParameters(PreparedStatement stmt, Lend entity) throws SQLException {
         stmt.setInt(1,entity.id_book());
         stmt.setInt(2,entity.id_user());
-        stmt.setInt(3,entity.id_employee());
-        stmt.setDate(4,entity.time());
-        stmt.setDate(5,entity.return_date());
+        stmt.setDate(3,entity.time());
+        stmt.setDate(4,entity.return_date());
     }
 
 
@@ -33,9 +33,8 @@ public class LendDao extends Dao<Lend>{
         while(res.next()){
             Lend lend = new Lend(
                     res.getInt("id"),
-                    res.getInt("id_copy"),
+                    res.getInt("id_book"),
                     res.getInt("id_user"),
-                    res.getInt("id_employee"),
                     res.getDate("time"),
                     res.getDate("return_date")
             );
@@ -49,6 +48,25 @@ public class LendDao extends Dao<Lend>{
         ResultSet res = stmt.executeQuery();
         res.next();
         return res.getInt("COUNT");
+    }
+
+    public List<Lend> selectAll(int dni, int page) throws SQLException{
+        int itemsPerPage = Status.getInstance().getItemsPerPage();
+        int lowerLimit = itemsPerPage*page;
+        int upperLimit = lowerLimit+itemsPerPage;
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM LEND INNER JOIN USER ON USER.ID = ID_USER WHERE DNI = ? LIMIT ?, ?");
+        stmt.setInt(1,dni);
+        stmt.setInt(2, lowerLimit);
+        stmt.setInt(3,upperLimit);
+        return this.hydrate(stmt.executeQuery());
+    }
+
+    public boolean isLent(int idBook, int idUser) throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID FROM LEND WHERE ID_BOOK = ? AND ID_USER = ? AND RETURN_DATE IS NULL");
+        stmt.setInt(1,idBook);
+        stmt.setInt(2,idUser);
+        return stmt.executeQuery().isBeforeFirst();
     }
 
 }
