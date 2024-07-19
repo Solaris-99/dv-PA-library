@@ -11,4 +11,5 @@ public class AuthorBusiness extends Business<AuthorDao, Author>{
     public AuthorBusiness(AuthorDao dao) {
         super(dao);
     }
+
 }

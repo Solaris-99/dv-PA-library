@@ -45,4 +45,17 @@ public class BookDao extends Dao<Book> {
     }
 
 
+    public void update(Book book) throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("UPDATE BOOK SET TITLE=?, YEAR=?, ID_AUTHOR=?, ID_PUBLISHER=?, TOTAL_COPIES=?, AVAILABLE_COPIES=? WHERE ID = ?");
+        stmt.setString(1,book.title());
+        stmt.setInt(2,book.year());
+        stmt.setInt(3,book.id_author());
+        stmt.setInt(4,book.id_publisher());
+        stmt.setInt(5,book.total_copies());
+        stmt.setInt(6,book.available_copies());
+        stmt.setInt(7,book.id());
+        stmt.executeUpdate();
+    }
+
+
 }

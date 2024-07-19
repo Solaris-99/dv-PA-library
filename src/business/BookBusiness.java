@@ -29,8 +29,18 @@ public class BookBusiness extends Business<BookDao, Book> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
+
+    public void update(Book book){
+        try {
+            dao.update(book);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 }

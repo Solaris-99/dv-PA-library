@@ -50,7 +50,7 @@ public class Lends implements Viewable {
             }
         }
         else{
-            content.remove(searchPanel);
+            body.remove(searchPanel);
             lends = lendBusiness.selectAll(status.getUserId(),"=","id",this.page);
         }
 

@@ -1,7 +1,9 @@
 package business;
 
 import dao.LendDao;
+import dto.Book;
 import dto.Lend;
+import dto.User;
 import helpers.Status;
 
 import java.sql.Date;
@@ -55,7 +57,33 @@ public class LendBusiness extends Business<LendDao, Lend>{
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
 
+    public void markAsReturned(Lend lend){
+        try {
+            BookBusiness bookBusiness = new BookBusiness();
+            dao.beginTransaction();
+            bookBusiness.updateCopies(lend.id_book(),false);
+            update("return_date",new Date(System.currentTimeMillis()),lend.id());
+            dao.commit();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+            System.out.println("Error updating lend");
+        }
+    }
+
+    public String generateStatistics(){
+        try {
+            //possible todo: add book with max active lends, user with max active lends
+            UserBusiness userBusiness = new UserBusiness();
+            BookBusiness bookBusiness = new BookBusiness();
+            User user = userBusiness.select(dao.findMaxLendsUser(),"=","id");
+            Book book = bookBusiness.select(dao.findMaxLendsBook(),"=","id");
+            return String.format("Historico:\nLibro más solicitado: %s - %s\nUsuario con más libros prestados: %s, %s",book.getAuthor().name(),book.title(),user.getFullName(), user.email());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

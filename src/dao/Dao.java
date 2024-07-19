@@ -29,6 +29,11 @@ public abstract class Dao <T extends Entity>{
         return this.hydrate(stmt.executeQuery()).getFirst();
     }
 
+    public List<T> selectAll() throws SQLException{
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+this.getTableName());
+        return this.hydrate(stmt.executeQuery());
+    }
+
     public List<T> selectAll(int page) throws SQLException{
         int itemsPerPage = Status.getInstance().getItemsPerPage();
         int lowerLimit = itemsPerPage*page;
@@ -86,7 +91,6 @@ public abstract class Dao <T extends Entity>{
         stmt.executeUpdate();
     }
 
-    //todo: value string, value date, value double, value boolean
     public T update(String column, int value, int id) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement("UPDATE " + getTableName() + " SET " + column + " = ? WHERE ID = ?");
         stmt.setInt(1, value);
@@ -106,6 +110,14 @@ public abstract class Dao <T extends Entity>{
     public T update(String column, String value, int id) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement("UPDATE " + getTableName() + " SET " + column + " = ? WHERE ID = ?");
         stmt.setString(1, value);
+        stmt.setInt(2, id);
+        stmt.executeUpdate();
+        return this.select(id, "=", "id");
+    }
+
+    public T update(String column, Date value, int id) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("UPDATE " + getTableName() + " SET " + column + " = ? WHERE ID = ?");
+        stmt.setDate(1, value);
         stmt.setInt(2, id);
         stmt.executeUpdate();
         return this.select(id, "=", "id");

@@ -9,7 +9,7 @@ public class Window extends JFrame{
     private Window(){
         setTitle("DV-Library");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,600);
+        setSize(700,800);
         setLocationRelativeTo(null);
         content = new JPanel();
         add(content);

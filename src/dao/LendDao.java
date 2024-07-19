@@ -69,4 +69,14 @@ public class LendDao extends Dao<Lend>{
         return stmt.executeQuery().isBeforeFirst();
     }
 
+    public int findMaxLendsUser() throws  SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID_USER, COUNT(1) AS COUNT FROM LEND GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
+        return stmt.executeQuery().getInt("id_user");
+    }
+
+    public int findMaxLendsBook() throws  SQLException{
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID_BOOK, COUNT(1) AS COUNT FROM LEND GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
+        return stmt.executeQuery().getInt("id_book");
+    }
+
 }

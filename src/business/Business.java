@@ -4,6 +4,7 @@ import dao.Dao;
 import dto.Entity;
 import helpers.Status;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -70,6 +71,17 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         return null;
     }
 
+    public List<E> selectAll(){
+        try{
+            return this.dao.selectAll();
+        }
+        catch (SQLException e){
+            System.out.println("Error fetching all items");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public E create(E entity){
         try{
             return this.dao.create(entity);
@@ -97,6 +109,28 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         }
         catch (SQLException e){
             System.out.println("Error updating item");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public E update(String column, String value, int id){
+        try{
+            return this.dao.update(column,value,id);
+        }
+        catch (SQLException e){
+            System.out.println("error updating item");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public E update(String column, Date value, int id){
+        try{
+            return this.dao.update(column,value,id);
+        }
+        catch (SQLException e){
+            System.out.println("error updating item");
             System.out.println(e.getMessage());
         }
         return null;
