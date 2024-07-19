@@ -14,7 +14,7 @@ public class BookDao extends Dao<Book> {
 
     public BookDao(){
         super();
-        this.tableName = "BOOK";
+        this.tableName = "book";
         this.cols = Arrays.asList("title","year","id_author","id_publisher","total_copies","available_copies");
     }
 

@@ -18,8 +18,8 @@ public class LendComponent extends JPanel {
         this.setBorder(border);
         if(Status.getInstance().isEmployee()){
             this.add(new JLabel(" "+lend.getUserIdentity()));
-            if(returned){
-                JButton markAsReturned = new JButton("Marcar como devuelto");
+            if(!returned){
+                JButton markAsReturned = new JButton("Marcar Devuelto");
                 markAsReturned.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -27,6 +27,7 @@ public class LendComponent extends JPanel {
                         lendBusiness.markAsReturned(lend);
                     }
                 });
+                this.add(markAsReturned);
             }
         }
 

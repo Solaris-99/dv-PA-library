@@ -40,5 +40,5 @@ INSERT INTO lend (id_book, id_user, time) VALUES
 (4,2,'2024-06-11'),
 (5,2,'2024-06-12');
 
-INSERT INTO LEND (ID_BOOK, ID_USER, TIME, ID_EMPLOYEE, RETURN_DATE) VALUES
+INSERT INTO lend (id_book, id_user, time, id_employee, return_date) VALUES
 (6,2,'2024-06-09', 1,'2024-06-10');

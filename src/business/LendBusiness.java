@@ -80,7 +80,7 @@ public class LendBusiness extends Business<LendDao, Lend>{
             BookBusiness bookBusiness = new BookBusiness();
             User user = userBusiness.select(dao.findMaxLendsUser(),"=","id");
             Book book = bookBusiness.select(dao.findMaxLendsBook(),"=","id");
-            return String.format("Historico:\nLibro más solicitado: %s - %s\nUsuario con más libros prestados: %s, %s",book.getAuthor().name(),book.title(),user.getFullName(), user.email());
+            return String.format("<html>Historico:<br>Libro más solicitado: %s - %s<br>Usuario con más libros prestados: %s, %s</html>",book.getAuthor().name(),book.title(),user.getFullName(), user.email());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

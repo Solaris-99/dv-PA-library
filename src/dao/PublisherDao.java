@@ -13,7 +13,7 @@ public class PublisherDao extends Dao<Publisher> {
 
     public PublisherDao(){
         super();
-        this.tableName = "PUBLISHER";
+        this.tableName = "publisher";
         this.cols = List.of("name");
     }
 

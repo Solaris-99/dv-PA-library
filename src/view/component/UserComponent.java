@@ -23,9 +23,10 @@ public class UserComponent extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 UserBusiness userBusiness = new UserBusiness();
                 userBusiness.delete(user.id());
-                Window.goTo(new UserManager());
+                Window.goTo(new UserManager(0));
             }
         });
+        this.add(deleteUser);
     }
 
 

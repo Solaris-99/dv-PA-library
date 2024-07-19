@@ -13,7 +13,7 @@ public class AuthorDao extends Dao<Author> {
 
     public AuthorDao(){
         super();
-        this.tableName = "AUTHOR";
+        this.tableName = "author";
         this.cols = List.of("name");
     }
 

@@ -13,7 +13,7 @@ public class EmployeeDao extends Dao<Employee> {
 
     public EmployeeDao(){
         super();
-        this.tableName = "EMPLOYEE";
+        this.tableName = "employee";
         this.cols = Arrays.asList("id_user","salary");
     }
 

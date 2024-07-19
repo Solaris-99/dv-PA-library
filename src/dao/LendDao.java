@@ -14,7 +14,7 @@ public class LendDao extends Dao<Lend>{
 
     public LendDao(){
         super();
-        this.tableName = "LEND";
+        this.tableName = "lend";
         this.cols = Arrays.asList("id_book","id_user","time","return_date");
     }
 
@@ -63,20 +63,24 @@ public class LendDao extends Dao<Lend>{
     }
 
     public boolean isLent(int idBook, int idUser) throws SQLException{
-        PreparedStatement stmt = connection.prepareStatement("SELECT ID FROM LEND WHERE ID_BOOK = ? AND ID_USER = ? AND RETURN_DATE IS NULL");
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID FROM lend WHERE ID_BOOK = ? AND ID_USER = ? AND RETURN_DATE IS NULL");
         stmt.setInt(1,idBook);
         stmt.setInt(2,idUser);
         return stmt.executeQuery().isBeforeFirst();
     }
 
     public int findMaxLendsUser() throws  SQLException{
-        PreparedStatement stmt = connection.prepareStatement("SELECT ID_USER, COUNT(1) AS COUNT FROM LEND GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
-        return stmt.executeQuery().getInt("id_user");
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID_USER, COUNT(1) AS COUNT FROM lend GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        return res.getInt("id_user");
     }
 
     public int findMaxLendsBook() throws  SQLException{
-        PreparedStatement stmt = connection.prepareStatement("SELECT ID_BOOK, COUNT(1) AS COUNT FROM LEND GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
-        return stmt.executeQuery().getInt("id_book");
+        PreparedStatement stmt = connection.prepareStatement("SELECT ID_BOOK, COUNT(1) AS COUNT FROM lend GROUP BY ID_USER ORDER BY COUNT DESC LIMIT 1");
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        return res.getInt("id_book");
     }
 
 }
