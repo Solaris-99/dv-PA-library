@@ -4,7 +4,9 @@ import business.LendBusiness;
 import dto.Book;
 import helpers.Status;
 import view.BookCreator;
+import view.Books;
 import view.HyperLink;
+import view.Window;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -30,6 +32,7 @@ public class BookComponent extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     lendBusiness.makeLend(Status.getInstance().getUserId(), book.id());
                     makeLend.getParent().remove(makeLend);
+                    Window.goTo(new Books("",0));
                 }
             });
         }

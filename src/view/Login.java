@@ -24,7 +24,13 @@ public class Login implements Viewable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AuthBusiness authBusiness = new AuthBusiness();
-                boolean login = authBusiness.login(emailField.getText(),new String(passwordField.getPassword()));
+                boolean login = false;
+                if(emailField.getText().isBlank() || new String(passwordField.getPassword()).isBlank()){
+                    messageLabel.setText("Ambos campos son requeridos");
+                    return;
+                }
+                login = authBusiness.login(emailField.getText(),new String(passwordField.getPassword()));
+
                 if(login){
                     Window.goTo(new Menu());
                 }

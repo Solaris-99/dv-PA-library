@@ -6,6 +6,7 @@ import dto.Lend;
 import dto.User;
 import helpers.Status;
 
+import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,6 +29,10 @@ public class LendBusiness extends Business<LendDao, Lend>{
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException ex){
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Por favor, introduzca solo números en la busqueda","Error",JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }

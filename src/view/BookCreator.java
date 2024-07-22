@@ -80,19 +80,31 @@ public class BookCreator implements Viewable{
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String title = titleField.getText();
-                int year = Integer.parseInt(yearField.getText());
-                int id_author = authorSelection.getItemAt(authorSelection.getSelectedIndex()).id();
-                int id_publisher = publisherSelection.getItemAt(publisherSelection.getSelectedIndex()).id();
-                int totalCopies = Integer.parseInt(copiesField.getText());
-                int availableCopies = idBook==0?(totalCopies - oldTotalCopies + oldAvailableCopies): totalCopies;
-                Book book = new Book(idBook,title,year,id_author,id_publisher,totalCopies,availableCopies);
-                if( idBook!= 0){
-                    bookBusiness.update(book);
+                try{
+                    String title = titleField.getText();
+                    int year = Integer.parseInt(yearField.getText());
+                    int id_author = authorSelection.getItemAt(authorSelection.getSelectedIndex()).id();
+                    int id_publisher = publisherSelection.getItemAt(publisherSelection.getSelectedIndex()).id();
+                    int totalCopies = Integer.parseInt(copiesField.getText());
+                    int availableCopies = idBook==0?(totalCopies - oldTotalCopies + oldAvailableCopies): totalCopies;
+
+                    if(title.isBlank() || year == 0 || totalCopies == 0){
+                        messageLabel.setText("Todos los campos son requeridos");
+                        return;
+                    }
+
+                    Book book = new Book(idBook,title,year,id_author,id_publisher,totalCopies,availableCopies);
+                    if( idBook!= 0){
+                        bookBusiness.update(book);
+                    }
+                    else{
+                        bookBusiness.create(book);
+                    }
+                }catch(NumberFormatException nfe){
+                    System.out.println(nfe.getMessage());
+                    messageLabel.setText("Por favor, revisa que los campos de año, y copias solo contengan números");
                 }
-                else{
-                    bookBusiness.create(book);
-                }
+
                 Window.goTo(new BookCreator());
             }
         });
@@ -103,6 +115,10 @@ public class BookCreator implements Viewable{
         addAuthorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(authorField.getText().isBlank()){
+                    messageLabel.setText("El nombre del autor es requerido");
+                    return;
+                }
                 authorBusiness.create(new Author(0,authorField.getText()));
                 Window.goTo(new BookCreator());
             }
@@ -111,6 +127,11 @@ public class BookCreator implements Viewable{
         updateAuthorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(authorField.getText().isBlank()){
+                    messageLabel.setText("El nombre del autor es requerido");
+                    return;
+                }
+
                 authorBusiness.update("name",authorField.getText(),authorUpdateComboBox.getItemAt(authorUpdateComboBox.getSelectedIndex()).id());
                 Window.goTo(new BookCreator());
             }
@@ -129,6 +150,10 @@ public class BookCreator implements Viewable{
         addPublisherButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(publisherField.getText().isBlank()){
+                    messageLabel.setText("El nombre de la editorial es requerida");
+                    return;
+                }
                 publisherBusiness.create(new Publisher(0,publisherField.getText()));
                 Window.goTo(new BookCreator());
             }
@@ -137,6 +162,10 @@ public class BookCreator implements Viewable{
         updatePublisherButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(publisherField.getText().isBlank()){
+                    messageLabel.setText("El nombre de la editorial es requerida");
+                    return;
+                }
                 publisherBusiness.update("name",publisherField.getText(),publisherUpdateComboBox.getItemAt(publisherUpdateComboBox.getSelectedIndex()).id());
                 Window.goTo(new BookCreator());
             }

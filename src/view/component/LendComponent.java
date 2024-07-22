@@ -2,6 +2,8 @@ package view.component;
 import business.LendBusiness;
 import dto.Lend;
 import helpers.Status;
+import view.Lends;
+import view.Window;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,6 +27,7 @@ public class LendComponent extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         LendBusiness lendBusiness = new LendBusiness();
                         lendBusiness.markAsReturned(lend);
+                        Window.goTo(new Lends("",0));
                     }
                 });
                 this.add(markAsReturned);

@@ -1,5 +1,7 @@
 package view;
 
+import helpers.Status;
+
 import javax.swing.*;
 
 public class Window extends JFrame{
@@ -33,6 +35,12 @@ public class Window extends JFrame{
 
     public static <T extends Viewable> void goTo(T view){
         Window window = Window.getInstance();
+        if(view instanceof Login){
+            Status status = Status.getInstance();
+            status.setEmployee(false);
+            status.setUserId(-1);
+        }
+
         window.setContent(view);
     }
 
