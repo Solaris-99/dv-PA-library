@@ -43,13 +43,6 @@ public class LendDao extends Dao<Lend>{
         return lends;
     }
 
-    public int lendCount() throws SQLException{
-        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(1) AS COUNT FROM LEND");
-        ResultSet res = stmt.executeQuery();
-        res.next();
-        return res.getInt("COUNT");
-    }
-
     public List<Lend> selectAll(int dni, int page) throws SQLException{
         int itemsPerPage = Status.getInstance().getItemsPerPage();
         int lowerLimit = itemsPerPage*page;

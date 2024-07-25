@@ -51,7 +51,7 @@ public class Lends implements Viewable {
         }
         else{
             body.remove(searchPanel);
-            lends = lendBusiness.selectAll(status.getUserId(),"=","id",this.page);
+            lends = lendBusiness.selectAll(status.getUserId(),"=","id_user",this.page);
         }
 
         for(Lend lend : lends){

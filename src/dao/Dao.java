@@ -17,9 +17,9 @@ public abstract class Dao <T extends Entity>{
         this.connection = DBConnection.getConnection();
     }
 
-    public T select(int val, String operator, String column) throws SQLException {
+    public T select(int value, String operator, String column) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM "+ this.getTableName() +" WHERE "+ column + " "+operator+" ?");
-        stmt.setInt(1,val);
+        stmt.setInt(1,value);
         return this.hydrate(stmt.executeQuery()).getFirst();
     }
 

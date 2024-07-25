@@ -103,6 +103,17 @@ public abstract class Business<T extends Dao<E>, E extends Entity>{
         }
     }
 
+    public E update(String column, double value, int id){
+        try{
+            return this.dao.update(column, value, id);
+        }
+        catch (SQLException e){
+            System.out.println("Error updating item");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public E update(String column, int value, int id){
         try{
             return this.dao.update(column, value, id);

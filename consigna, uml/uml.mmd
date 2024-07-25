@@ -1,0 +1,515 @@
+classDiagram
+    namespace dao{
+
+        class Dao~T extends Entity~:::abstract{
+            <<Abstract>>
+            # Connection connection
+            # String tableName
+            # List~String~ cols
+            + Dao()
+            # setInsertParameters(PreparedStatement stmt, T entity)*
+            # hydrate(ResultSet res) List~T~*
+            # getInsertQuery() String
+            + select(int value, String operator, String column) T
+            + select(String value, String operator, String column) T
+            + selectAll()List~T~
+            + selectAll(int page)List~T~
+            + selectAll(String value, String operator, String column, int page)List~T~
+            + selectAll(int value, String operator, String column, int page)List~T~
+            + getTableName() String
+            + create(T entity) T
+            + delete(int id)
+            + update(String column, int value, int id) T
+            + update(String column, double value, int id) T
+            + update(String column, String value, int id) T
+            + update(String column, Date value, int id) T
+            + getItemCount() int
+            + beginTransaction()
+            + commit()
+            + rollback()
+        }
+
+        class AuthorDao~Author~{
+            +AuthorDao()
+            #setInsertParameters(PreparedStatement stmt, Author entity)
+            #hydrate(ResultSet res) List~Author~
+        }
+
+        class BookDao~Book~{
+            +BookDao()
+            #setInsertParameters(PreparedStatement stmt, Book entity)
+            #hydrate(ResultSet res) List~Book~
+        }
+
+        class EmployeeDao~Employee~{
+            +EmployeeDao()
+            #setInsertParameters(PreparedStatement stmt, Employee entity)
+            #hydrate(ResultSet res) List~Employee~
+            +isEmployee(int userId) boolean
+        }
+
+        class LendDao~Lend~{
+            +LendDao()
+            #setInsertParameters(PreparedStatement stmt, Lend entity)
+            #hydrate(ResultSet res) List~Lend~
+            +selectAll(int dni, int page) List~Lend~
+            +isLent(int idBook, int idUser) boolean
+            +findMaxLendsUser() int
+            +findMaxLendsBook() int
+        }
+
+        class PublisherDao~Publisher~{
+            +PublisherDao()
+            #setInsertParameters(PreparedStatement stmt, Publisher entity)
+            #hydrate(ResultSet res) List~Publisher~
+        }
+
+        class UserDao~User~{
+            +UserDao()
+            #setInsertParameters(PreparedStatement stmt, User entity)
+            #hydrate(ResultSet res) List~User~
+        }
+    }
+
+    namespace dto{
+        class Author{
+            <<Record>>
+            -int id
+            -String name
+            +id() int
+            +name()
+            +toString() String
+        }
+        class Book{
+            <<Record>>
+            -int id
+            -String title
+            -int year
+            -int id_author
+            -int id_publisher
+            -int total_copies
+            -int available_copies
+            +id() int
+            +title() String
+            +year() year
+            +id_author() int
+            +id_publisher() int
+            +total_copies() int
+            +available_copies() int
+            +getAuthor() Author
+            +getPublisher() Publisher
+        }
+
+        class Employee{
+            <<Record>>
+            -int id
+            -int id_user
+            -double salary
+            +id() int
+            +id_user() int
+            +salary() double
+        }
+
+        class Lend{
+            <<Record>>
+            -int id
+            -int id_book
+            -int id_user
+            -Date time
+            -Date return_date
+            +getBookTitle() String
+            +getUserIdentity() String
+        }
+
+        class Publisher{
+            <<Record>>
+            -int id
+            -String name
+            +id() int
+            +name() String
+            +toSting() String
+        }
+
+        class User{
+            <<Record>>
+            -int id
+            -String name
+            -String surname
+            -String email
+            -String password
+            -int DNI
+            +id() int
+            +name() String
+            +surname() String
+            +email() String
+            +password() String
+            +DNI() int
+            +getFullName() String
+        }
+
+        class Entity{
+            <<Interface>>
+            id() int
+        }
+
+    }
+
+    namespace business{
+class Business ~T extends DaoE E extends Entity~ {
+<<Abstract>>
+#T dao
++Business(T dao)
++ select(int value, String operator, String column) E
++ select(String value, String operator, String column) E
++ selectAll()List~E~
++ selectAll(int page)List~E~
++ selectAll(String value, String operator, String column, int page)List~E~
++ selectAll(int value, String operator, String column, int page)List~E~
++ create(T entity) E
++ delete(int id)
++ update(String column, int value, int id) E
++ update(String column, double value, int id) E
++ update(String column, String value, int id) E
++ update(String column, Date value, int id) E
++ getTotalPages() int
+}
+
+class AuthorBusiness~AuthorDao Author~{
++AuthorBusiness()
++AuthorBusiness(AuthorDao dao)
+}
+
+class BookBusiness~BookDao, Book~{
++ BookBusiness()
++ BookBusiness(BookDao dao)
++ updateCopies(int bookId, boolean Borrowing)
++ update(Book book)
+}
+
+class LendBusiness~LendDao, Lend~{
++LendBusiness()
++LendBusiness(LendDao dao)
++selectAll(String DNI, int page) List~Lend~
++isLent(int idBook) boolean
++makeLend(int idUser, int idBook)
++markAsReturned(Lend lend)
++generateStatistics() String
+}
+
+class EmployeeBusiness ~EmployeeDao, Employee~{
++EmployeeBusiness()
++EmployeeBusiness(EmployeeDao dao)
+}
+
+class PublisherBusiness ~PublisherDao, Publisher~{
++PublisherBusiness()
++PublisherBusiness(PublisherDao dao)
+}
+
+class UserBusiness ~UserDao, User~{
++UserBusiness()
++UserBusiness(UserDao dao)
+}
+
+class AuthBusiness{
+- UserDao userDao
+- EmployeeDao employeeDao
++AuthBusiness()
++AuthBusiness(UserDao userdao, EmployeeDao employeeDao)
++isEmployee(int userId) boolean
++login(String email, String password) boolean
+}
+
+}
+
+namespace config{
+class DBConnection{
+- DBConnection instance $
+- Connection con
+- DBConnection()
++ getConnection() Connection $
+}
+}
+
+namespace helpers{
+class Status{
+- Status instance $
+- int userId
+- boolean isEmployee
+- int itemsPerPage
+- Status()
++ getInstance() Status $
++ getUserId() int
++ setUserId(int userId)
++ isEmployee() boolean
++ setEmployee(boolean employee)
++ getItemsPerPage() int
+}
+}
+
+namespace view{
+class HyperLink~T extends Viewable~{
+- T view
++ HyperLink(T view)
++ actionPerformed(ActionEvent e)
+}
+
+class Viewable{
+<<Interface>>
++getContent() JPanel
+    }
+
+class Window ["Window extends JFrame"]{
+- Window instance $
+- JPanel content
+- Window()
++ getInstance() Window $
+-setContent(~T extends Viewable~ view)
++goTo(~T extends Viewable~ view) $
+
+}
+
+
+class BookCreator{
+- JPanel title
+- JLabel titleLabel
+- JPanel body
+- JButton goBackButton
+- JLabel messageLabel
+- JPanel bookPanel
+- JComboBox~Author~ authorSelection
+- JComboBox~Publisher~ publisherSelection
+- JButton addBookButton
+- JButton addAuthorButton
+- JTextField titleField
+- JTextField yearField
+- JTextField copiesField
+- JTextField authorField
+- JTextField publisherField
+- JButton addPublisherButton
+- JPanel content
+- JButton deleteAuthorButton
+- JButton updateAuthorButton
+- JComboBox~Author~ authorUpdateComboBox
+- JButton updatePublisherButton
+- JButton deletePublisherButton
+- JComboBox~Publisher~ publisherUpdateComboBox
+- int idBook
+- int oldTotalCopies
+- int oldAvailableCopies
++BookCreator()
++BookCreator(int indBook)
+-makeFunctional()
++getContent() JPanel
+}
+
+class Books{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JPanel content;
+- JButton goBackButton;
+- JTextField searchField;
+- JPanel booksPanel;
+- JButton backPage;
+- JButton nextPage;
+- final int page;
+- final String search;
++Books(String search, int page)
+-makeFunctional()
++getContent() JPanel
+}
+
+class Lends{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JButton goBackButton;
+- JPanel content;
+- JButton backPage;
+- JButton nextPage;
+- JPanel lendsPanel;
+- JTextField searchField;
+- JPanel searchPanel;
+- final int page;
+- final String search;
++Lends(String search, int page)
+-makeFunctional()
++getContent() JPanel
+}
+
+class Login{
+- JButton loginButton;
+- JPasswordField passwordField;
+- JTextField emailField;
+- JLabel titleLabel;
+- JPanel content;
+- JButton registerButton;
+- JPanel title;
+- JPanel body;
+- JLabel messageLabel;
+-makeFunctional()
++getContent() JPanel
+}
+
+class Menu{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JPanel content;
+- JButton booksButton;
+- JButton lendsButton;
+- JButton userManagerButton;
+- JButton statisticsButton;
+- JButton logoutButton;
+- JButton addBookButton;
+-makeFunctional()
++getContent() JPanel
+}
+
+class Register{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JTextField emailField;
+- JPasswordField passwordField;
+- JButton loginButton;
+- JButton registerButton;
+- JTextField nameField;
+- JTextField surnameField;
+- JTextField DNIField;
+- JPanel content;
+- JLabel messageLabel;
+- makeFunctional()
++ getContent() JPanel
+}
+
+class Statistics{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JButton goBackButton;
+- JLabel statisticsLabel;
+- JPanel content;
+-makeFunctional()
++getContent() JPanel
+}
+
+class UserManager{
+- JPanel title;
+- JLabel titleLabel;
+- JPanel body;
+- JButton goBackButton;
+- JPanel usersPanel;
+- JButton backPage;
+- JButton nextPage;
+- JPanel searchPanel;
+- JTextField searchField;
+- JPanel content;
+- final int page;
+- String search;
++ UserManager(int page)
++ UserManager(String search, int page)
+- makeFunctional()
++getContent() JPanel
+}
+
+class component
+
+}
+
+namespace component{
+
+class BookComponent ["BookComponent extends JPanel"]{
+- JLabel bookLabel
+- JButton makeLend
++ BookComponent(Book book)
+}
+
+class LendComponent["LendComponent extends JPanel"]{
++LendComponent(Lend lend)
+}
+
+class UserComponent["UserComponent extends JPanel"]{
++UserComponent(User user)
+}
+
+    }
+
+Dao *-- DBConnection
+
+Dao <|-- AuthorDao
+Dao <|-- BookDao
+Dao <|-- EmployeeDao
+Dao <|-- LendDao
+Dao <|-- PublisherDao
+Dao <|-- UserDao
+
+AuthorDao <-- Author
+BookDao <-- Book
+EmployeeDao <-- Employee
+LendDao <-- Lend
+PublisherDao <-- Publisher
+UserDao <-- User
+
+Author ..|> Entity
+Book ..|> Entity
+Employee ..|> Entity
+Lend ..|> Entity
+Publisher ..|> Entity
+User ..|> Entity
+
+Business <|-- AuthorBusiness
+Business <|-- BookBusiness
+Business <|-- EmployeeBusiness
+Business <|-- LendBusiness
+Business <|-- PublisherBusiness
+Business <|-- UserBusiness
+
+AuthorBusiness <-- AuthorDao
+BookBusiness <-- BookDao
+EmployeeBusiness <-- EmployeeDao
+LendBusiness <-- LendDao
+PublisherBusiness <-- PublisherDao
+UserBusiness <-- UserDao
+AuthBusiness <-- UserDao
+AuthBusiness <-- EmployeeDao
+
+AuthBusiness <-- Status
+
+Window <-- HyperLink
+
+BookCreator ..|> Viewable
+Books ..|> Viewable
+Lends ..|> Viewable
+Login ..|> Viewable
+Menu ..|> Viewable
+Register ..|> Viewable
+Statistics ..|> Viewable
+UserManager ..|> Viewable
+
+Window o-- Viewable
+Books o-- BookComponent
+Lends o-- LendComponent
+UserManager o-- UserComponent
+
+BookCreator --> AuthorBusiness
+BookCreator --> PublisherBusiness
+BookCreator --> BookBusiness
+
+Books --> BookBusiness
+Lends --> LendBusiness
+Lends --> Status
+Login --> AuthBusiness
+Menu --> Status
+Register --> UserBusiness
+Register --> AuthBusiness
+Statistics --> LendBusiness
+UserManager --> UserBusiness
+
+Menu <--> UserManager
+Menu <--> Statistics
+Menu <--> BookCreator
+Menu <--> Login
+Menu <--> Lends
+Login <--> Register

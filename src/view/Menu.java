@@ -26,7 +26,6 @@ public class Menu implements Viewable{
             body.remove(addBookButton);
         }
         else{
-            //TODO
             userManagerButton.addActionListener(new HyperLink<>(new UserManager(0)));
             statisticsButton.addActionListener(new HyperLink<>(new Statistics()));
             addBookButton.addActionListener(new HyperLink<>(new BookCreator()));
