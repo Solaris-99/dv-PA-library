@@ -28,3 +28,7 @@ ademas, internamente se maneja las copias disponibles y copias totales.
 El diagrama se encuentra en `/consigna, uml` en formatos `.png` y `.svg`, se incluye
 el svg ya que el diagrama es muy grande y se ve mejor en ese formato.
 Es un diagrama de clases hecho con mermaid, se incluye el `.mmd`
+
+## Ejecución
+Ejecutar los scripts sql `library_dv.sql` y `data.sql`, localizados en `/DB/`, en ese orden, para crear la base de datos y agregarle data, respectivamente.
+Luego, correr desde la clase main o buildear (creado con java 21).

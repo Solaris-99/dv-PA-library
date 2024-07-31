@@ -99,12 +99,12 @@ CREATE TABLE IF NOT EXISTS `lend` (
   CONSTRAINT `fk_lend_user1`
     FOREIGN KEY (`id_user`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_lend_book1`
     FOREIGN KEY (`id_book`)
     REFERENCES `book` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   CONSTRAINT `fk_employee_user1`
     FOREIGN KEY (`id_user`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
